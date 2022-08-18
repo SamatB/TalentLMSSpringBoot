@@ -1,12 +1,13 @@
 package com.peaksoft.spring_boot.repository;
 
 import com.peaksoft.spring_boot.entity.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -21,4 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u join Group g on u.group.id=g.id join g.courses c join Company com on c.company.id=com.id")
     List<User> getStudentsByCompany(Long companyId);
+
+    @Query("select u from User u join u.roles r where r.name=:role_name and (upper(u.userName)) like concat('%',:text,'%')" +
+    "or upper(u.userLastname) like concat('%',:text,'%') or upper(u.email) like concat('%',:text,'%')")
+    List<User> searchAndPagination(@Param("text") String text, String s, Pageable pageable);
 }

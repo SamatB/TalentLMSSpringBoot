@@ -11,6 +11,8 @@ import com.peaksoft.spring_boot.repository.RoleRepository;
 import com.peaksoft.spring_boot.repository.UserRepository;
 import com.peaksoft.spring_boot.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +57,11 @@ public class UserServiceImpl implements UserService {
             responses.add(response);
         }
         return responses;
+    }
+
+    private List<User> searchStudent(String name, Pageable pageable) {
+        String text = name == null ? "" : name;
+        return userRepository.searchAndPagination(text.toUpperCase(), text.toUpperCase(), pageable);
     }
 
     @Override
@@ -173,6 +180,23 @@ public class UserServiceImpl implements UserService {
     public int sizeOfCompaniesStudents(Long companyId) {
         List<User> users = userRepository.getStudentsByCompany(companyId);
         return users.size();
+    }
+
+    @Override
+    public List<User> search(String name, Pageable pageable) {
+        String text = name == null ? "" : name;
+        return userRepository.searchAndPagination("STUDENT", text.toUpperCase(), pageable);
+    }
+
+    @Override
+    public List<StudentResponse> pagination(String text, int page, int size) {
+        List<StudentResponse> responses = new ArrayList<>();
+        Pageable pageable = PageRequest.of(page - 1, size);
+        List<User> users = search(text, pageable);
+        for (User user : users) {
+            responses.add(mapToStudentResponse(user));
+        }
+        return responses;
     }
 
 

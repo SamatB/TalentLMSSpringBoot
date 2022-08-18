@@ -21,10 +21,18 @@ public class StudentController {
 
     private final UserService userService;
 
+//    @GetMapping
+//    @Operation(summary = "get all students", description = "we can get all student")
+//    public List<StudentResponse> getAllStudents() {
+//        return userService.getAllStudents();
+//    }
+
     @GetMapping
     @Operation(summary = "get all students", description = "we can get all student")
-    public List<StudentResponse> responses() {
-        return userService.getAllStudents();
+    public List<StudentResponse> getAllStudent(@RequestParam(name = "text", required = false) String text,
+                                               @RequestParam int page,
+                                               @RequestParam int size) {
+        return userService.pagination(text, page, size);
     }
 
     @GetMapping("/{id}")
