@@ -38,10 +38,10 @@ public class Course {
         this.company = company;
     }
 
-    @ManyToOne(cascade = {CascadeType.REMOVE,CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Company company;
 
-    @OneToOne(mappedBy = "course")
+    @OneToOne(mappedBy = "course",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private User user;
 
 }

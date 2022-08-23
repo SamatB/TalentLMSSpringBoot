@@ -17,8 +17,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/companies")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ADMIN')")
-@Tag(name = "Company API", description = "User with role admin can get all companies, create, update, get by id, get by name, delete company or get size of students")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+@Tag(name = "Company API", description = "User with role admin can get all companies, create, update, get by id, get by name, delete company or get size of students, " +
+        "and with role teacher can get all companies, get company by id and name and get students' size")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -26,6 +27,7 @@ public class CompanyController {
     private final UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get all companies", description = "we can get all companies")
     public List<CompanyResponse> getAllCompanies(){
         return companyService.getAllCompanies();
@@ -44,12 +46,14 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get company by id", description = "we can get company by id")
     public CompanyResponse getById(@PathVariable Long id){
         return companyService.getById(id);
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get company by name", description = "we can get company by name")
     public CompanyResponse getByName(@PathVariable String name) {
         return companyService.getByName(name);
@@ -63,6 +67,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/studentsSize")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get students' size", description = "we can get the size of students")
     public ResponseEntity<Integer> size(@PathVariable Long id) {
         return new ResponseEntity<>(userService.sizeOfCompaniesStudents(id), HttpStatus.OK);

@@ -1,8 +1,7 @@
 package com.peaksoft.spring_boot.security;
 
 import com.peaksoft.spring_boot.security.jwt.JwtTokenFilter;
-import com.peaksoft.spring_boot.service.impl.UserServiceImpl;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -24,17 +22,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         securedEnabled = true,
         jsr250Enabled = true
 )
-@RequiredArgsConstructor
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userService;
     private final JwtTokenFilter jwtTokenFilter;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    public SecurityConfig(UserDetailsService userService, JwtTokenFilter jwtTokenFilter) {
+        this.userService = userService;
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -43,10 +50,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/jwt/registration").permitAll()
                 .antMatchers("/api/jwt/**").permitAll()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                 .permitAll()

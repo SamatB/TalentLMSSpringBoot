@@ -31,7 +31,7 @@ public class AuthController {
     private final LoginMapper loginMapper;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @Operation(summary = "login", description = "user can login")
     public ResponseEntity<LoginResponse> getLogin(@RequestBody LoginRequest request) {
         try {
@@ -45,7 +45,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("registration")
+    @PostMapping("/registration")
     @Operation(summary = "registration", description = "user can register")
     public StudentResponse create(@RequestBody StudentRequest request) {
         return userService.register(request);

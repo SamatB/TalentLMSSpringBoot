@@ -1,5 +1,6 @@
 package com.peaksoft.spring_boot.controller;
 
+import com.peaksoft.spring_boot.dto.StudentResponse;
 import com.peaksoft.spring_boot.dto.TeacherRequest;
 import com.peaksoft.spring_boot.dto.TeacherResponse;
 import com.peaksoft.spring_boot.service.UserService;
@@ -15,15 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/teachers")
 @PreAuthorize("hasAuthority('ADMIN')")
-@Tag(name = "Teacher API", description = "User with role admin can get all teachers, get teacher by email,  create or update teacher")
+@Tag(name = "Teacher API", description = "User with role admin can get all teachers, get teacher by email, create, update or delete teacher")
 public class TeacherController {
 
     private final UserService userService;
 
+//    @GetMapping
+//    @Operation(summary = "get all teachers", description = "we can get all teachers")
+//    public List<TeacherResponse> getAllTeachers() {
+//        return userService.getAllTeachers();
+//    }
+
     @GetMapping
     @Operation(summary = "get all teachers", description = "we can get all teachers")
-    public List<TeacherResponse> getAllTeachers() {
-        return userService.getAllTeachers();
+    public List<TeacherResponse> getAllTeachers(@RequestParam(name = "text", required = false) String text,
+                                               @RequestParam int page,
+                                               @RequestParam int size) {
+        return userService.teacherPagination(text, page, size);
     }
 
     @GetMapping("/{email}")
@@ -42,5 +51,11 @@ public class TeacherController {
     @Operation(summary = "update teacher", description = "we can update teacher")
     public TeacherResponse update(@PathVariable Long id, @RequestBody TeacherRequest request) {
         return userService.updateTeacher(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "delete teacher", description = "we can delete teacher")
+    public void deleteTeacher(@PathVariable Long id) {
+        userService.deleteTeacher(id);
     }
 }

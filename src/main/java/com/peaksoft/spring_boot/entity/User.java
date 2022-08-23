@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -36,8 +35,7 @@ public class User implements UserDetails {
     private StudyFormat studyFormat;
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

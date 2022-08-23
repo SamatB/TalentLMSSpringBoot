@@ -28,7 +28,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getCourseByName(String name) {
-        return courseRepository.findByName(name);
+        return courseRepository.findByCourseName(name);
     }
 
 

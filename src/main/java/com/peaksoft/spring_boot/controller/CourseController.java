@@ -16,15 +16,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/api/courses")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ADMIN')")
-@Tag(name = "Curse API", description = "User with role admin can get all courses, get course by id, get course by name,  create, update or delete course")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+@Tag(name = "Curse API", description = "User with role admin can get all courses, get course by id, get course by name,  create, update or delete course, " +
+        "and with role teacher can get all courses, get course by id and name")
 public class CourseController {
 
     private final CourseService courseService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get all courses", description = "we can get all courses")
     public List<Course> getAllCourses() {
         return courseService.getAllCourses();
@@ -43,12 +45,14 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get course by id", description = "we can get course by id")
     public Course getById(@PathVariable Long id) {
         return courseService.getCourseById(id);
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get course by name", description = "we can get course by name")
     public Course getByName(@PathVariable String name) {
         return courseService.getCourseByName(name);

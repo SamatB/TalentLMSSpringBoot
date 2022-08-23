@@ -30,7 +30,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getGroupByName(String name) {
-        return groupRepository.findByName(name);
+        return groupRepository.findByGroupName(name);
     }
 
     @Override

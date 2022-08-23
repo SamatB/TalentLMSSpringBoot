@@ -20,7 +20,10 @@ public interface UserService {
     TeacherResponse addTeacher(TeacherRequest request);
     StudentResponse updateStudent(Long id, StudentRequest request);
     TeacherResponse updateTeacher(Long id, TeacherRequest request);
+    void deleteStudent(Long id);
+    void deleteTeacher(Long id);
     int sizeOfCompaniesStudents(Long companyId);
     List<User> search(String name, Pageable pageable);
     List<StudentResponse> pagination(String text, int page, int size);
+    List<TeacherResponse> teacherPagination(String text, int page, int size);
 }

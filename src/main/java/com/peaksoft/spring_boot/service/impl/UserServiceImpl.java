@@ -59,11 +59,6 @@ public class UserServiceImpl implements UserService {
         return responses;
     }
 
-    private List<User> searchStudent(String name, Pageable pageable) {
-        String text = name == null ? "" : name;
-        return userRepository.searchAndPagination(text.toUpperCase(), text.toUpperCase(), pageable);
-    }
-
     @Override
     public List<TeacherResponse> getAllTeachers() {
         List<User> users = userRepository.findAll();
@@ -167,6 +162,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteStudent(Long id) {
+        User user = userRepository.findById(id).get();
+        User user1 = null;
+        for (int i = 0; i < user.getRoles().size(); i++) {
+            if (user.getRoles().get(i).getName().equals("STUDENT")) {
+                user1 = user;
+            } else if (user1 == null) {
+                System.out.println(("User with id:{} not found" + id));
+            }
+        }
+        userRepository.delete(user1);
+    }
+
+    @Override
+    public void deleteTeacher(Long id) {
+        User user = userRepository.findById(id).get();
+        User user1 = null;
+        for (int i = 0; i < user.getRoles().size(); i++) {
+            if (user.getRoles().get(i).getName().equals("TEACHER")) {
+                user1 = user;
+            } else if (user1 == null) {
+                System.out.println(("User with id:{} not found" + id));
+            }
+        }
+        userRepository.delete(user1);
+    }
+
+    @Override
     public List<StudentResponse> getStudentByGroupId(Long groupId) {
         List<User> users = userRepository.getStudentsByGroupId(groupId);
         List<StudentResponse> responses = new ArrayList<>();
@@ -199,12 +222,24 @@ public class UserServiceImpl implements UserService {
         return responses;
     }
 
+    @Override
+    public List<TeacherResponse> teacherPagination(String text, int page, int size) {
+        List<TeacherResponse> responses = new ArrayList<>();
+        Pageable pageable = PageRequest.of(page - 1, size);
+        List<User> users = search(text, pageable);
+        for (User user : users) {
+            responses.add(mapToTeacherResponse(user));
+        }
+        return responses;
+    }
+
 
     private StudentResponse mapToStudentResponse(User user) {
         if (user == null) {
             return null;
         }
         StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setId(user.getId());
         studentResponse.setName(user.getUsername());
         studentResponse.setSurname(user.getUserLastname());
         studentResponse.setEmail(user.getEmail());

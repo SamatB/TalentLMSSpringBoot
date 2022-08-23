@@ -45,7 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyResponse getByName(String name) {
-        return mapToResponse(companyRepository.findByName(name));
+        return mapToResponse(companyRepository.findByCompanyName(name));
     }
 
     @Override

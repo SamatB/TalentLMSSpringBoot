@@ -19,8 +19,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/groups")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyAuthority('ADMIN', 'EDITOR')")
-@Tag(name = "Group API", description = "User with role admin, editor can get all groups, " +
+@PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+@Tag(name = "Group API", description = "User with role admin, teacher can get all groups, " +
         "get group by name, create, update, delete group, or get students by group id")
 public class GroupController {
     private final GroupService groupService;

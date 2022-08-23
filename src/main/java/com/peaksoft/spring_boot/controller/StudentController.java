@@ -15,13 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/students")
 @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
-@Tag(name = "Student API", description = "User with role admin, editor can get all students, create/add, " +
-        "update student get student by id, group id or email")
+@Tag(name = "Student API", description = "User with role admin, teacher can get all students, create/add, " +
+        "update, delete, get student by id or email")
 public class StudentController {
 
     private final UserService userService;
 
-//    @GetMapping
+//    @GetMapping("/getAll")
 //    @Operation(summary = "get all students", description = "we can get all student")
 //    public List<StudentResponse> getAllStudents() {
 //        return userService.getAllStudents();
@@ -51,6 +51,12 @@ public class StudentController {
     @Operation(summary = "update student", description = "we can update student")
     public StudentResponse update(@PathVariable Long id, @RequestBody StudentRequest request) {
         return userService.updateStudent(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "delete student", description = "we can delete student")
+    public void deleteStudent(@PathVariable Long id) {
+        userService.deleteStudent(id);
     }
 
     @GetMapping("/{email}")

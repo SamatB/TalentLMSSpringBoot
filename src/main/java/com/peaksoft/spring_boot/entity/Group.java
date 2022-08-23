@@ -38,13 +38,13 @@ public class Group {
         this.courses = courses;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REFRESH,CascadeType.REMOVE,CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH,CascadeType.MERGE})
             @JoinTable(name = "course_group",
             joinColumns = @JoinColumn(name = "groups_id"),
             inverseJoinColumns = @JoinColumn(name = "courses_id"))
     private List<Course>courses;
 
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<User> users;
 }

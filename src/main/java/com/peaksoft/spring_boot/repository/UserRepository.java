@@ -25,5 +25,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u join u.roles r where r.name=:role_name and (upper(u.userName)) like concat('%',:text,'%')" +
     "or upper(u.userLastname) like concat('%',:text,'%') or upper(u.email) like concat('%',:text,'%')")
-    List<User> searchAndPagination(@Param("text") String text, String s, Pageable pageable);
+    List<User> searchAndPagination(@Param("role_name")String roleName,@Param("text") String text, Pageable pageable);
 }

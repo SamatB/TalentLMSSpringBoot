@@ -1,7 +1,5 @@
 package com.peaksoft.spring_boot.entity;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-
-
 
 @Getter@Setter
 @NoArgsConstructor
