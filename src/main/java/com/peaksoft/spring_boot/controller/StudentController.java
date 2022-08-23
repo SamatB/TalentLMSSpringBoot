@@ -43,7 +43,7 @@ public class StudentController {
 
     @PostMapping
     @Operation(summary = "create student", description = "we can create/add student")
-    public StudentResponse addStudent (@RequestBody StudentRequest request) {
+    public StudentResponse addStudent(@RequestBody StudentRequest request) {
         return userService.register(request);
     }
 
@@ -64,5 +64,4 @@ public class StudentController {
     public StudentResponse getByEmail(@PathVariable String email) {
         return userService.getStudentByEmail(email);
     }
-
 }

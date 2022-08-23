@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Data
 public class StudentResponse {
+
     private Long id;
     private String name;
     private String surname;

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class TeacherResponse {
+
     private String email;
     private String firstName;
     private String lastname;

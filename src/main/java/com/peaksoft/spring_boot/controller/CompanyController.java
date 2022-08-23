@@ -21,7 +21,6 @@ import java.util.List;
 @Tag(name = "Company API", description = "User with role admin can get all companies, create, update, get by id, get by name, delete company or get size of students, " +
         "and with role teacher can get all companies, get company by id and name and get students' size")
 public class CompanyController {
-
     private final CompanyService companyService;
 
     private final UserService userService;
@@ -29,7 +28,7 @@ public class CompanyController {
     @GetMapping
     @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get all companies", description = "we can get all companies")
-    public List<CompanyResponse> getAllCompanies(){
+    public List<CompanyResponse> getAllCompanies() {
         return companyService.getAllCompanies();
     }
 
@@ -48,7 +47,7 @@ public class CompanyController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get company by id", description = "we can get company by id")
-    public CompanyResponse getById(@PathVariable Long id){
+    public CompanyResponse getById(@PathVariable Long id) {
         return companyService.getById(id);
     }
 

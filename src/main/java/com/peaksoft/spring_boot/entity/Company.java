@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "companies")
@@ -31,6 +32,6 @@ public class Company {
         this.created = created;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "company")
-    private List<Course>courses;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    private List<Course> courses;
 }

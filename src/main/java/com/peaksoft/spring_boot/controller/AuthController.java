@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/jwt")
 @Tag(name = "Auth API", description = "User with role admin, editor can login and register")
 public class AuthController {
-
     private final UserServiceImpl userService;
     private final UserRepository repository;
     private final JwtTokenUtil jwtTokenUtil;

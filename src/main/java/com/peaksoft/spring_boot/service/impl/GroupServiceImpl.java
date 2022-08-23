@@ -47,7 +47,6 @@ public class GroupServiceImpl implements GroupService {
         return mapToResponse(group);
     }
 
-
     @Override
     public void deleteById(Long id) {
         courseRepository.deleteById(id);
@@ -63,7 +62,8 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.save(group);
         return mapToResponse(group);
     }
-    private GroupResponse mapToResponse(Group group){
+
+    private GroupResponse mapToResponse(Group group) {
         GroupResponse groupResponse = new GroupResponse();
         groupResponse.setName(group.getGroupName());
         groupResponse.setDateOfStart(group.getDateOfCreate());

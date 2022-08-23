@@ -1,6 +1,5 @@
 package com.peaksoft.spring_boot.controller;
 
-import com.peaksoft.spring_boot.dto.StudentResponse;
 import com.peaksoft.spring_boot.dto.TeacherRequest;
 import com.peaksoft.spring_boot.dto.TeacherResponse;
 import com.peaksoft.spring_boot.service.UserService;
@@ -18,14 +17,7 @@ import java.util.List;
 @PreAuthorize("hasAuthority('ADMIN')")
 @Tag(name = "Teacher API", description = "User with role admin can get all teachers, get teacher by email, create, update or delete teacher")
 public class TeacherController {
-
     private final UserService userService;
-
-//    @GetMapping
-//    @Operation(summary = "get all teachers", description = "we can get all teachers")
-//    public List<TeacherResponse> getAllTeachers() {
-//        return userService.getAllTeachers();
-//    }
 
     @GetMapping
     @Operation(summary = "get all teachers", description = "we can get all teachers")

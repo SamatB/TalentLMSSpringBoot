@@ -1,6 +1,5 @@
 package com.peaksoft.spring_boot.controller;
 
-import com.peaksoft.spring_boot.dto.CompanyRequest;
 import com.peaksoft.spring_boot.dto.CourseRequest;
 import com.peaksoft.spring_boot.dto.CourseResponse;
 import com.peaksoft.spring_boot.entity.Course;
@@ -22,7 +21,6 @@ import java.util.List;
 @Tag(name = "Curse API", description = "User with role admin can get all courses, get course by id, get course by name,  create, update or delete course, " +
         "and with role teacher can get all courses, get course by id and name")
 public class CourseController {
-
     private final CourseService courseService;
 
     @GetMapping

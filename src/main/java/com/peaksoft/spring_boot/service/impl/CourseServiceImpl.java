@@ -61,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.deleteById(id);
     }
 
-    private CourseResponse mapToResponse(Course course){
+    private CourseResponse mapToResponse(Course course) {
         CourseResponse courseResponse = new CourseResponse();
         courseResponse.setName(course.getCourseName());
         courseResponse.setDurationMonth(course.getDurationMonth());

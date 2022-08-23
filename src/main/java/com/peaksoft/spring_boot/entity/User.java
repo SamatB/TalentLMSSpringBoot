@@ -22,7 +22,7 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
     private String userLastname;
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private StudyFormat studyFormat;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -85,5 +85,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

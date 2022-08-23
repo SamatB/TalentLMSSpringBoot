@@ -23,7 +23,7 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyResponse> getAllCompanies() {
         List<Company> companies = companyRepository.findAll();
         List<CompanyResponse> responses = new ArrayList<>();
-        for (Company company: companies) {
+        for (Company company : companies) {
             responses.add(mapToResponse(company));
         }
         return responses;
@@ -59,7 +59,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void deleteById(Long id) {
-         companyRepository.deleteById(id);
+        companyRepository.deleteById(id);
     }
 
     private CompanyResponse mapToResponse(Company company) {

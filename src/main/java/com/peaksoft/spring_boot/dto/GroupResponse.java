@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class GroupResponse {
+
     private String name;
     private LocalDate dateOfStart;
     private LocalDate dateOfFinish;

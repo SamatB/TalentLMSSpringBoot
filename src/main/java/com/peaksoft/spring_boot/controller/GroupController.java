@@ -29,7 +29,7 @@ public class GroupController {
 
     @GetMapping
     @Operation(summary = "get all groups", description = "we can get all groups")
-    public List<Group> getAllGroups(){
+    public List<Group> getAllGroups() {
         return groupService.getAllGroups();
     }
 
@@ -41,7 +41,7 @@ public class GroupController {
 
     @GetMapping("/{name}")
     @Operation(summary = "get group by name", description = "we can get group by name")
-    public Group getByName(@PathVariable String name){
+    public Group getByName(@PathVariable String name) {
         return groupService.getGroupByName(name);
     }
 

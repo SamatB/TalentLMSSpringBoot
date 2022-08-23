@@ -23,6 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserService {
     private final CourseRepository courseRepository;
 
     private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public StudentResponse getStudentById(Long id) {
@@ -232,7 +232,6 @@ public class UserServiceImpl implements UserService {
         }
         return responses;
     }
-
 
     private StudentResponse mapToStudentResponse(User user) {
         if (user == null) {

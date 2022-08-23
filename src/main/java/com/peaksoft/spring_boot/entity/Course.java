@@ -1,8 +1,5 @@
 package com.peaksoft.spring_boot.entity;
 
-
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,14 +7,14 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
-
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "courses")
 public class Course {
+
     @Id
     @GeneratedValue(generator = "course_gen", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "course_gen", sequenceName = "course_seq", allocationSize = 1)
@@ -41,7 +38,7 @@ public class Course {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Company company;
 
-    @OneToOne(mappedBy = "course",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @OneToOne(mappedBy = "course", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User user;
 
 }

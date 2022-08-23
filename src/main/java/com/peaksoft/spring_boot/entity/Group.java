@@ -1,6 +1,5 @@
 package com.peaksoft.spring_boot.entity;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,9 +11,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups")
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class Group {
+
     @Id
     @GeneratedValue(generator = "group_gen", strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "group_gen", sequenceName = "group_seq", allocationSize = 1)
@@ -38,13 +39,13 @@ public class Group {
         this.courses = courses;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH,CascadeType.MERGE})
-            @JoinTable(name = "course_group",
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinTable(name = "course_group",
             joinColumns = @JoinColumn(name = "groups_id"),
             inverseJoinColumns = @JoinColumn(name = "courses_id"))
-    private List<Course>courses;
+    private List<Course> courses;
 
 
-    @OneToMany(mappedBy = "group",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @OneToMany(mappedBy = "group", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<User> users;
 }
