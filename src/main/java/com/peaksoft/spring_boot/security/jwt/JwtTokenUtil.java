@@ -16,7 +16,6 @@ import java.util.function.Function;
 public class JwtTokenUtil {
     @Value("java_6")
     private String jwtSecret;
-
     private final static Long JWT_TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000L;
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -56,7 +55,7 @@ public class JwtTokenUtil {
     }
 
     public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token,Claims::getSubject);
+        return getClaimFromToken(token, Claims::getSubject);
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

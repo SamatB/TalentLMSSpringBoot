@@ -1,5 +1,6 @@
 package com.peaksoft.spring_boot.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "courses")
+@AllArgsConstructor
 public class Course {
 
     @Id
@@ -26,14 +28,6 @@ public class Course {
     private Boolean deleted = false;
     @CreatedDate
     private LocalDate created;
-
-    public Course(String courseName, Long durationMonth, Boolean deleted, LocalDate created, Company company) {
-        this.courseName = courseName;
-        this.durationMonth = durationMonth;
-        this.deleted = deleted;
-        this.created = created;
-        this.company = company;
-    }
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Company company;

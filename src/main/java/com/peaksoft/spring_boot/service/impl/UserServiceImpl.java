@@ -100,6 +100,8 @@ public class UserServiceImpl implements UserService {
         user.setUserLastname(request.getSurname());
         user.setCreated(LocalDate.now());
         user.setStatus(Status.ACTIVE);
+        Group group = groupRepository.findById(request.getGroupId()).get();
+        user.setGroup(group);
         user.setStudyFormat(StudyFormat.valueOf(request.getStudyFormat()));
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("STUDENT"));
@@ -243,7 +245,6 @@ public class UserServiceImpl implements UserService {
         studentResponse.setSurname(user.getUserLastname());
         studentResponse.setEmail(user.getEmail());
         studentResponse.setStudyFormat(user.getStudyFormat());
-        studentResponse.setGroup(user.getGroup());
         studentResponse.setStatus(user.getStatus());
         studentResponse.setCreated(LocalDate.now());
         return studentResponse;

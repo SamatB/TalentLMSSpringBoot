@@ -21,11 +21,11 @@ public class StudentController {
 
     private final UserService userService;
 
-//    @GetMapping("/getAll")
-//    @Operation(summary = "get all students", description = "we can get all student")
-//    public List<StudentResponse> getAllStudents() {
-//        return userService.getAllStudents();
-//    }
+    @GetMapping("/getAll")
+    @Operation(summary = "get all students", description = "we can get all student")
+    public List<StudentResponse> getAllStudents() {
+        return userService.getAllStudents();
+    }
 
     @GetMapping
     @Operation(summary = "get all students", description = "we can get all student")

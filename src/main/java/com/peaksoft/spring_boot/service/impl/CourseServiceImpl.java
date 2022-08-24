@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -38,17 +39,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course createCourse(Course course) {
+    public CourseResponse createCourse(CourseRequest course) {
         Course course1 = new Course();
         course1.setCourseName(course.getCourseName());
         course1.setDurationMonth(course.getDurationMonth());
-        return courseRepository.save(course1);
+        course1.setCreated(LocalDate.now());
+        courseRepository.save(course1);
+        return mapToResponse(course1);
     }
 
     @Override
     public CourseResponse updateCourse(Long id, CourseRequest request) {
         Course course = courseRepository.findById(id).get();
-        course.setCourseName(request.getName());
+        course.setCourseName(request.getCourseName());
         course.setDurationMonth(request.getDurationMonth());
         Company company = companyRepository.findById(request.getCompanyId()).get();
         course.setCompany(company);
@@ -63,8 +66,10 @@ public class CourseServiceImpl implements CourseService {
 
     private CourseResponse mapToResponse(Course course) {
         CourseResponse courseResponse = new CourseResponse();
-        courseResponse.setName(course.getCourseName());
+        courseResponse.setId(course.getId());
+        courseResponse.setCourseName(course.getCourseName());
         courseResponse.setDurationMonth(course.getDurationMonth());
+        courseResponse.setCreated(LocalDate.now());
         return courseResponse;
     }
 }

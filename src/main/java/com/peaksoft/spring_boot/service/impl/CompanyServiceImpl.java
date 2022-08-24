@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class CompanyServiceImpl implements CompanyService {
         Company company1 = new Company();
         company1.setCompanyName(company.getName());
         company1.setLocatedCountry(company.getLocatedCountry());
+        company1.setCreated(LocalDate.now());
         companyRepository.save(company1);
         return mapToResponse(company1);
     }
@@ -64,8 +66,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     private CompanyResponse mapToResponse(Company company) {
         CompanyResponse companyResponse = new CompanyResponse();
+        companyResponse.setId(company.getId());
         companyResponse.setName(company.getCompanyName());
         companyResponse.setLocatedCountry(company.getLocatedCountry());
+        companyResponse.setCreated(LocalDate.now());
         return companyResponse;
     }
 }

@@ -32,7 +32,7 @@ public class CourseController {
 
     @PostMapping
     @Operation(summary = "create course", description = "we can create course")
-    public Course create(@RequestBody Course course) {
+    public CourseResponse create(@RequestBody CourseRequest course) {
         return courseService.createCourse(course);
     }
 

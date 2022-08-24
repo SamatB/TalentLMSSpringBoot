@@ -14,7 +14,7 @@ public interface CourseService {
 
     Course getCourseById(Long id);
 
-    Course createCourse(Course request);
+    CourseResponse createCourse(CourseRequest request);
 
     CourseResponse updateCourse(Long id, CourseRequest course);
 

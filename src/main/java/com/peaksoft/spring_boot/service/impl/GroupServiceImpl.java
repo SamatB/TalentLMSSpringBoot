@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupResponse create(GroupRequest request) {
         Group group = new Group();
-        group.setGroupName(request.getName());
-        group.setDateOfCreate(request.getDateOfStart());
+        group.setGroupName(request.getGroupName());
+        group.setDateOfCreate(LocalDate.now());
         group.setDateOfFinish(request.getDateOfFinish());
         Course course = courseRepository.findById(request.getCourseId()).get();
         List<Course> courses = new ArrayList<>();
@@ -55,8 +56,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupResponse update(Long id, GroupRequest request) {
         Group group = groupRepository.findById(id).get();
-        group.setGroupName(request.getName());
-        group.setDateOfCreate(request.getDateOfStart());
+        group.setGroupName(request.getGroupName());
+        group.setDateOfCreate(LocalDate.now());
         group.setDateOfFinish(request.getDateOfFinish());
 //        group.setCourses(request.getCourseId());
         groupRepository.save(group);
@@ -65,8 +66,8 @@ public class GroupServiceImpl implements GroupService {
 
     private GroupResponse mapToResponse(Group group) {
         GroupResponse groupResponse = new GroupResponse();
-        groupResponse.setName(group.getGroupName());
-        groupResponse.setDateOfStart(group.getDateOfCreate());
+        groupResponse.setGroupName(group.getGroupName());
+        groupResponse.setDateOfCreate(LocalDate.now());
         groupResponse.setDateOfFinish(group.getDateOfFinish());
         return groupResponse;
     }

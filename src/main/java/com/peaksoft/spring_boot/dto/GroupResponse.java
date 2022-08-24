@@ -7,8 +7,8 @@ import java.time.LocalDate;
 @Data
 public class GroupResponse {
 
-    private String name;
-    private LocalDate dateOfStart;
-    private LocalDate dateOfFinish;
-    private Long courseId;
+    private String groupName;
+    private LocalDate dateOfCreate;
+    private String dateOfFinish;
+//    private Long courseId;
 }
