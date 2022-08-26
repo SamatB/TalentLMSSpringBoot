@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CourseService {
 
-    List<Course> getAllCourses();
+    List<CourseResponse> getAllCourses();
 
     Course getCourseByName(String name);
 

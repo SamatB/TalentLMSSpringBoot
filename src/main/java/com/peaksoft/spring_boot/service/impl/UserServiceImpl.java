@@ -1,9 +1,6 @@
 package com.peaksoft.spring_boot.service.impl;
 
-import com.peaksoft.spring_boot.dto.StudentRequest;
-import com.peaksoft.spring_boot.dto.StudentResponse;
-import com.peaksoft.spring_boot.dto.TeacherRequest;
-import com.peaksoft.spring_boot.dto.TeacherResponse;
+import com.peaksoft.spring_boot.dto.*;
 import com.peaksoft.spring_boot.entity.*;
 import com.peaksoft.spring_boot.repository.CourseRepository;
 import com.peaksoft.spring_boot.repository.GroupRepository;
@@ -17,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -111,6 +110,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponse userRegister(UserRequest request) {
+        User user = new User();
+        user.setUserName(request.getName());
+        user.setUserLastname(request.getSurname());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
+        return mapToResponse(user);
+    }
+
+    private UserResponse mapToResponse(User user) {
+        if (user == null) {
+            return null;
+        }
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setFirstName(user.getUsername());
+        userResponse.setLastname(user.getUserLastname());
+        userResponse.setEmail(user.getEmail());
+        return userResponse;
+    }
+
+    @Override
     public TeacherResponse addTeacher(TeacherRequest request) {
         User user = new User();
         user.setEmail(request.getEmail());
@@ -120,6 +142,7 @@ public class UserServiceImpl implements UserService {
         user.setCreated(LocalDate.now());
         user.setStatus(Status.ACTIVE);
         Course course = courseRepository.findById(request.getCourseId()).get();
+        course.setUser(user);
         user.setCourse(course);
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("TEACHER"));
@@ -151,7 +174,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setUserName(request.getName());
         user.setUserLastname(request.getSurname());
-        Role role = roleRepository.findByName(request.getRoleName());
+        Role role = roleRepository.findByName(request.getRoles());
         List<Role> roles = new ArrayList<>();
         roles.add(role);
         if (role == null) {
@@ -208,16 +231,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> search(String name, Pageable pageable) {
+    public List<User> search(String name, Pageable pageable, LocalDate startDate, LocalDate endDate) {
         String text = name == null ? "" : name;
-        return userRepository.searchAndPagination("STUDENT", text.toUpperCase(), pageable);
+
+        return userRepository.searchAndPagination("STUDENT", text, pageable, startDate, endDate);
     }
 
     @Override
     public List<StudentResponse> pagination(String text, int page, int size) {
         List<StudentResponse> responses = new ArrayList<>();
         Pageable pageable = PageRequest.of(page - 1, size);
-        List<User> users = search(text, pageable);
+        List<User> users = search(text, pageable, sta);
         for (User user : users) {
             responses.add(mapToStudentResponse(user));
         }
@@ -247,6 +271,8 @@ public class UserServiceImpl implements UserService {
         studentResponse.setStudyFormat(user.getStudyFormat());
         studentResponse.setStatus(user.getStatus());
         studentResponse.setCreated(LocalDate.now());
+        studentResponse.setRoles(user.getRoles());
+        studentResponse.setGroup(user.getGroup());
         return studentResponse;
     }
 
@@ -255,6 +281,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         TeacherResponse teacherResponse = new TeacherResponse();
+        teacherResponse.setId(user.getId());
         teacherResponse.setFirstName(user.getUsername());
         teacherResponse.setLastname(user.getUserLastname());
         teacherResponse.setEmail(user.getEmail());

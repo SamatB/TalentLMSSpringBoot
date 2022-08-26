@@ -70,6 +70,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyResponse.setName(company.getCompanyName());
         companyResponse.setLocatedCountry(company.getLocatedCountry());
         companyResponse.setCreated(LocalDate.now());
+        companyResponse.setCourse(company.getCourses());
         return companyResponse;
     }
 }

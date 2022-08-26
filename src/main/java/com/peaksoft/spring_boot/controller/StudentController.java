@@ -2,13 +2,17 @@ package com.peaksoft.spring_boot.controller;
 
 import com.peaksoft.spring_boot.dto.StudentRequest;
 import com.peaksoft.spring_boot.dto.StudentResponse;
+import com.peaksoft.spring_boot.entity.User;
 import com.peaksoft.spring_boot.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,11 @@ import java.util.List;
 public class StudentController {
 
     private final UserService userService;
+
+//    @Override
+//    public List<User> findByCreated(@Param LocalDate registerDate) {
+//        return userService.findByCreated(registerDate);
+//    }
 
     @GetMapping("/getAll")
     @Operation(summary = "get all students", description = "we can get all student")
@@ -54,6 +63,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "delete student", description = "we can delete student")
     public void deleteStudent(@PathVariable Long id) {
         userService.deleteStudent(id);

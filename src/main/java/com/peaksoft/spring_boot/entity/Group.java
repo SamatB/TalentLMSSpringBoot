@@ -1,9 +1,12 @@
 package com.peaksoft.spring_boot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -35,9 +38,11 @@ public class Group {
     @JoinTable(name = "course_group",
             joinColumns = @JoinColumn(name = "groups_id"),
             inverseJoinColumns = @JoinColumn(name = "courses_id"))
+    @JsonIgnore
     private List<Course> courses;
 
-
-    @OneToMany(mappedBy = "group", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "group", cascade = {CascadeType.REFRESH})
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<User> users;
 }

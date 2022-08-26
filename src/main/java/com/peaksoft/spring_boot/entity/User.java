@@ -1,6 +1,9 @@
 package com.peaksoft.spring_boot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,7 +47,9 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.MERGE)
     private Course course;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Group group;
 
     @Override

@@ -24,39 +24,39 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get all courses", description = "we can get all courses")
-    public List<Course> getAllCourses() {
+    public List<CourseResponse> getAllCourses() {
         return courseService.getAllCourses();
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "create course", description = "we can create course")
     public CourseResponse create(@RequestBody CourseRequest course) {
         return courseService.createCourse(course);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "update course", description = "we can update course")
     public CourseResponse update(@PathVariable Long id, @RequestBody CourseRequest request) {
         return courseService.updateCourse(id, request);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get course by id", description = "we can get course by id")
     public Course getById(@PathVariable Long id) {
         return courseService.getCourseById(id);
     }
 
     @GetMapping("/{name}")
-    @PreAuthorize("hasAuthority('TEACHER')")
     @Operation(summary = "get course by name", description = "we can get course by name")
     public Course getByName(@PathVariable String name) {
         return courseService.getCourseByName(name);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "delete course", description = "we can delete course")
     public ResponseEntity delete(@PathVariable Long id) {
         courseService.deleteById(id);

@@ -1,5 +1,6 @@
 package com.peaksoft.spring_boot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,11 +31,19 @@ public class Course {
     private Boolean deleted = false;
     @CreatedDate
     private LocalDate created;
+    private transient Long companyId;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private Company company;
 
-    @OneToOne(mappedBy = "course", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private User user;
+    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "courses")
+    @JsonIgnore
+    private List<Group> groups;
 
+
+
+    @OneToOne(mappedBy = "course", cascade = {CascadeType.MERGE})
+    @JsonIgnore
+    private User user;
 }

@@ -4,14 +4,17 @@ import com.peaksoft.spring_boot.dto.CourseRequest;
 import com.peaksoft.spring_boot.dto.CourseResponse;
 import com.peaksoft.spring_boot.entity.Company;
 import com.peaksoft.spring_boot.entity.Course;
+import com.peaksoft.spring_boot.entity.User;
 import com.peaksoft.spring_boot.repository.CompanyRepository;
 import com.peaksoft.spring_boot.repository.CourseRepository;
+import com.peaksoft.spring_boot.repository.UserRepository;
 import com.peaksoft.spring_boot.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,11 +23,18 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
 
+    private final UserRepository userRepository;
+
     private final CompanyRepository companyRepository;
 
     @Override
-    public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+    public List<CourseResponse> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        for (Course course : courses) {
+            courseResponses.add(mapToResponse(course));
+        }
+        return courseResponses;
     }
 
     @Override
@@ -41,9 +51,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseResponse createCourse(CourseRequest course) {
         Course course1 = new Course();
+        Company company = new Company();
         course1.setCourseName(course.getCourseName());
         course1.setDurationMonth(course.getDurationMonth());
         course1.setCreated(LocalDate.now());
+        course1.setCompany(companyRepository.findById(course.getCompanyId()).get());
+        course1.setCompanyId(course.getCompanyId());
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(course1);
+        company.setCourses(courseList);
         courseRepository.save(course1);
         return mapToResponse(course1);
     }
@@ -61,6 +77,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteById(Long id) {
+     List<User>users=userRepository.getStudentsByCourseId(id);
+     for (User user:users){
+         user.setCourse(null);
+         userRepository.save(user);
+     }
         courseRepository.deleteById(id);
     }
 
@@ -69,6 +90,7 @@ public class CourseServiceImpl implements CourseService {
         courseResponse.setId(course.getId());
         courseResponse.setCourseName(course.getCourseName());
         courseResponse.setDurationMonth(course.getDurationMonth());
+        courseResponse.setCompany(course.getCompany());
         courseResponse.setCreated(LocalDate.now());
         return courseResponse;
     }
