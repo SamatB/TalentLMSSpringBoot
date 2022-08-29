@@ -31,7 +31,6 @@ public class Course {
     private Boolean deleted = false;
     @CreatedDate
     private LocalDate created;
-    private transient Long companyId;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
@@ -43,7 +42,7 @@ public class Course {
 
 
 
-    @OneToOne(mappedBy = "course", cascade = {CascadeType.MERGE})
+    @OneToOne(mappedBy = "course", cascade = {CascadeType.REFRESH})
     @JsonIgnore
     private User user;
 }

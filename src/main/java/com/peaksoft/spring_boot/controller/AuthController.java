@@ -46,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/registration")
     @Operation(summary = "registration", description = "user can register")
-    public UserResponse create(@RequestBody UserRequest request) {
-        return userService.userRegister(request);
+    public StudentResponse create(@RequestBody StudentRequest request) {
+        return userService.register(request);
     }
 }

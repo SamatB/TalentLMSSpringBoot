@@ -45,9 +45,9 @@ public class GroupController {
         return groupService.getGroupById(id);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name")
     @Operation(summary = "get group by name", description = "we can get group by name")
-    public Group getByName(@PathVariable String name) {
+    public Group getByName(@RequestParam(value = "name", required = false) String name) {
         return groupService.getGroupByName(name);
     }
 

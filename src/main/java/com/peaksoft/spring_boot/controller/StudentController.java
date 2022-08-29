@@ -40,8 +40,10 @@ public class StudentController {
     @Operation(summary = "get all students", description = "we can get all student")
     public List<StudentResponse> getAllStudent(@RequestParam(name = "text", required = false) String text,
                                                @RequestParam int page,
-                                               @RequestParam int size) {
-        return userService.pagination(text, page, size);
+                                               @RequestParam int size,
+                                               @RequestParam String startDate,
+                                               @RequestParam String endDate) {
+        return userService.pagination(text, page, size, LocalDate.parse(startDate), LocalDate.parse(endDate));
     }
 
     @GetMapping("/{id}")

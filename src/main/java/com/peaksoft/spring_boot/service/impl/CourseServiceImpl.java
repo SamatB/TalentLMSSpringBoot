@@ -56,7 +56,6 @@ public class CourseServiceImpl implements CourseService {
         course1.setDurationMonth(course.getDurationMonth());
         course1.setCreated(LocalDate.now());
         course1.setCompany(companyRepository.findById(course.getCompanyId()).get());
-        course1.setCompanyId(course.getCompanyId());
         List<Course> courseList = new ArrayList<>();
         courseList.add(course1);
         company.setCourses(courseList);

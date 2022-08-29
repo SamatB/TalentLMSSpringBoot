@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,8 +31,10 @@ public class TeacherController {
     @Operation(summary = "get all teachers", description = "we can get all teachers")
     public List<TeacherResponse> getAllTeachers(@RequestParam(name = "text", required = false) String text,
                                                @RequestParam int page,
-                                               @RequestParam int size) {
-        return userService.teacherPagination(text, page, size);
+                                               @RequestParam int size,
+                                                @RequestParam LocalDate startDate,
+                                                @RequestParam LocalDate endDate) {
+        return userService.teacherPagination(text, page, size,startDate,endDate);
     }
 
     @GetMapping("/{email}")

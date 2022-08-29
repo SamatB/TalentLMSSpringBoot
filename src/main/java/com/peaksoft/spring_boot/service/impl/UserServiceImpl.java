@@ -14,9 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 @Service
@@ -99,8 +98,8 @@ public class UserServiceImpl implements UserService {
         user.setUserLastname(request.getSurname());
         user.setCreated(LocalDate.now());
         user.setStatus(Status.ACTIVE);
-        Group group = groupRepository.findById(request.getGroupId()).get();
-        user.setGroup(group);
+            Group group = groupRepository.findById(request.getGroupId()).get();
+            user.setGroup(group);
         user.setStudyFormat(StudyFormat.valueOf(request.getStudyFormat()));
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("STUDENT"));
@@ -110,26 +109,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse userRegister(UserRequest request) {
-        User user = new User();
-        user.setUserName(request.getName());
-        user.setUserLastname(request.getSurname());
+    public StudentResponse updateStudent(Long id, StudentRequest request) {
+        User user = userRepository.findById(id).get();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUserName(request.getName());
+        user.setUserLastname(request.getSurname());
+        user.setStudyFormat(StudyFormat.valueOf(request.getStudyFormat()));
+        user.setGroup(groupRepository.findById(request.getGroupId()).get());
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findByName(request.getRoleName()));
+        user.setRoles(roles);
         userRepository.save(user);
-        return mapToResponse(user);
-    }
-
-    private UserResponse mapToResponse(User user) {
-        if (user == null) {
-            return null;
-        }
-        UserResponse userResponse = new UserResponse();
-        userResponse.setId(user.getId());
-        userResponse.setFirstName(user.getUsername());
-        userResponse.setLastname(user.getUserLastname());
-        userResponse.setEmail(user.getEmail());
-        return userResponse;
+        return mapToStudentResponse(user);
     }
 
     @Override
@@ -149,22 +141,6 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         userRepository.save(user);
         return mapToTeacherResponse(user);
-    }
-
-    @Override
-    public StudentResponse updateStudent(Long id, StudentRequest request) {
-        User user = userRepository.findById(id).get();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setUserName(request.getName());
-        user.setUserLastname(request.getSurname());
-        user.setStudyFormat(StudyFormat.valueOf(request.getStudyFormat()));
-        user.setGroup(groupRepository.findById(request.getGroupId()).get());
-        List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findByName(request.getRoleName()));
-        user.setRoles(roles);
-        userRepository.save(user);
-        return mapToStudentResponse(user);
     }
 
     @Override
@@ -231,17 +207,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> search(String name, Pageable pageable, LocalDate startDate, LocalDate endDate) {
+    public List<User> search(String name, Pageable pageable, LocalDate fromDate, LocalDate toDate) {
         String text = name == null ? "" : name;
-
-        return userRepository.searchAndPagination("STUDENT", text, pageable, startDate, endDate);
+        List<User> responses = userRepository.searchAndPagination("STUDENT", text, pageable);
+        List<User> users = new ArrayList<>();
+        for (User user : responses) {
+            if (!(user.getCreated().isAfter(toDate) || user.getCreated().isBefore(fromDate))) {
+                users.add(user);
+            }
+        }return users;
     }
 
     @Override
-    public List<StudentResponse> pagination(String text, int page, int size) {
+    public List<StudentResponse> pagination(String text, int page, int size,LocalDate startDate, LocalDate endDate) {
         List<StudentResponse> responses = new ArrayList<>();
         Pageable pageable = PageRequest.of(page - 1, size);
-        List<User> users = search(text, pageable, sta);
+        List<User> users = search(text, pageable,startDate,endDate);
         for (User user : users) {
             responses.add(mapToStudentResponse(user));
         }
@@ -249,10 +230,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<TeacherResponse> teacherPagination(String text, int page, int size) {
+    public List<TeacherResponse> teacherPagination(String text, int page, int size,LocalDate startDate, LocalDate endDate) {
         List<TeacherResponse> responses = new ArrayList<>();
         Pageable pageable = PageRequest.of(page - 1, size);
-        List<User> users = search(text, pageable);
+        List<User> users = search(text, pageable,startDate,endDate);
         for (User user : users) {
             responses.add(mapToTeacherResponse(user));
         }
